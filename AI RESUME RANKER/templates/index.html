@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ResumeRank | Resume Screening</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+         <!-- NAVIGATION BAR -->
+
+    <header class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                RR
+            </div>
+
+            <div class="brand-text">
+
+                <h2>
+                    ResumeRank
+                </h2>
+
+                <span>
+                    Resume Screening System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('index') }}"
+               class="active">
+
+                Screen Resumes
+
+            </a>
+
+
+            <a href="{{ url_for('dashboard') }}">
+
+                Dashboard
+
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+         <!-- HERO PAGE -->
+    
+    <main class="screening-container">
+
+
+        <section class="hero-section">
+
+
+            <div class="hero-content">
+
+                <span class="eyebrow">
+                    RESUME SCREENING
+                </span>
+
+
+                <h1>
+                    Find the right
+                    <span>candidates</span>
+                    faster.
+                </h1>
+
+
+                <p>
+                    Enter the job requirements and upload
+                    candidate resumes to compare their
+                    qualifications and generate a ranked
+                    shortlist.
+                </p>
+
+            </div>
+
+
+            <div class="hero-badge">
+
+                <div class="badge-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Smart Screening
+                    </strong>
+
+                    <span>
+                        Consistent candidate comparison
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+             <!-- SCREENING FORM -->
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="screening-form">
+
+
+            
+                 <!-- JOB DESCRIPTION CARD -->
+            <section class="form-card">
+
+
+                <div class="card-header">
+
+                    <div class="card-number">
+                        01
+                    </div>
+
+
+                    <div>
+
+                        <span class="card-label">
+                            JOB REQUIREMENTS
+                        </span>
+
+                        <h2>
+                            Job Description
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <p class="card-description">
+                    Add the requirements, responsibilities,
+                    skills and qualifications for the position.
+                </p>
+
+
+                <div class="input-wrapper">
+
+                    <textarea
+                        id="job_description"
+                        name="job_description"
+                        rows="12"
+                        placeholder="Example:
+
+We are looking for a Software Engineer with experience in Python, Flask, SQL, HTML, CSS and JavaScript.
+
+Required skills:
+• Python
+• Flask
+• SQL
+• REST APIs
+• HTML & CSS
+• JavaScript
+
+Experience:
+2+ years in software development."
+                        required></textarea>
+
+                </div>
+
+
+                <div class="input-hint">
+
+                    <span class="hint-icon">
+                        i
+                    </span>
+
+                    <span>
+                        Include important skills and
+                        qualifications for better matching.
+                    </span>
+
+                </div>
+
+
+            </section>
+
+
+
+        
+                 <!-- RESUME UPLOAD CARD -->
+             
+
+            <section class="form-card">
+
+
+                <div class="card-header">
+
+                    <div class="card-number">
+                        02
+                    </div>
+
+
+                    <div>
+
+                        <span class="card-label">
+                            CANDIDATE RESUMES
+                        </span>
+
+                        <h2>
+                            Upload Resumes
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <p class="card-description">
+                    Upload multiple candidate resumes at once
+                    for comparison and ranking.
+                </p>
+
+
+
+                <!-- Upload Area -->
+
+                <label for="resumeFiles"
+                       class="upload-area">
+
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+
+                    <h3>
+                        Choose resume files
+                    </h3>
+
+
+                    <p>
+                        Click here to browse your computer
+                    </p>
+
+
+                    <span class="upload-format">
+                        DOCX files only • Multiple files supported
+                    </span>
+
+
+                    <input
+                        type="file"
+                        id="resumeFiles"
+                        name="resumes"
+                        accept=".docx"
+                        multiple
+                        required>
+
+                </label>
+
+
+
+                <!-- Selected Files -->
+
+                <div id="fileList"
+                     class="file-list">
+
+
+                    <div class="empty-files">
+
+                        <span>
+                            ○
+                        </span>
+
+                        <p>
+                            No resumes selected yet
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+                 <!-- SUBMIT AREA -->
+
+            <section class="screening-action">
+
+
+                <div class="action-info">
+
+                    <div class="action-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Ready to screen?
+                        </strong>
+
+                        <span>
+                            Your resumes will be compared
+                            against the job requirements.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit"
+                        class="screen-btn">
+
+                    <span>
+                        Screen & Rank Candidates
+                    </span>
+
+                    <strong>
+                        →
+                    </strong>
+
+                </button>
+
+
+            </section>
+
+
+        </form>
+
+
+
+        
+             <!-- HOW IT WORKS -->
+         
+
+        <section class="process-section">
+
+
+            <div class="section-heading">
+
+                <span>
+                    HOW IT WORKS
+                </span>
+
+                <h2>
+                    From resumes to ranked candidates
+                </h2>
+
+            </div>
+
+
+            <div class="process-grid">
+
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Add Requirements
+                    </h3>
+
+                    <p>
+                        Provide the job description,
+                        required skills and qualifications.
+                    </p>
+
+                </div>
+
+
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Upload Resumes
+                    </h3>
+
+                    <p>
+                        Select multiple DOCX resumes
+                        from your computer.
+                    </p>
+
+                </div>
+
+
+
+                <div class="process-card">
+
+                    <div class="process-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Review Rankings
+                    </h3>
+
+                    <p>
+                        View candidate scores,
+                        rankings and resume details.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+         <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div>
+
+            <strong>
+                ResumeRank
+            </strong>
+
+            <span>
+                Resume Screening System
+            </span>
+
+        </div>
+
+
+        <p>
+            © 2026 ResumeRank. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    
+         <!-- DISPLAY SELECTED FILES -->
+    <script>
+
+        const fileInput =
+            document.getElementById("resumeFiles");
+
+        const fileList =
+            document.getElementById("fileList");
+
+
+        fileInput.addEventListener(
+            "change",
+            function () {
+
+
+                fileList.innerHTML = "";
+
+
+                if (this.files.length === 0) {
+
+                    fileList.innerHTML = `
+                        <div class="empty-files">
+
+                            <span>○</span>
+
+                            <p>
+                                No resumes selected yet
+                            </p>
+
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                const selectedTitle =
+                    document.createElement("div");
+
+                selectedTitle.className =
+                    "selected-title";
+
+                selectedTitle.innerHTML =
+                    `<strong>
+                        ${this.files.length}
+                        resume(s) selected
+                    </strong>`;
+
+                fileList.appendChild(
+                    selectedTitle
+                );
+
+
+                for (
+                    let i = 0;
+                    i < this.files.length;
+                    i++
+                ) {
+
+
+                    const file =
+                        this.files[i];
+
+
+                    const fileItem =
+                        document.createElement("div");
+
+                    fileItem.className =
+                        "file-item";
+
+
+                    fileItem.innerHTML = `
+
+                        <div class="file-left">
+
+                            <div class="file-icon">
+                                DOC
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ${file.name}
+                                </strong>
+
+                                <span>
+                                    ${(file.size / 1024).toFixed(1)}
+                                    KB
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="file-check">
+                            ✓
+                        </div>
+
+                    `;
+
+
+                    fileList.appendChild(
+                        fileItem
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

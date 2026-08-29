@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    {% if candidate %}
+
+        <title>
+            {{ candidate.name }} | ResumeRank
+        </title>
+
+    {% else %}
+
+        <title>
+            Candidate Not Found | ResumeRank
+        </title>
+
+    {% endif %}
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION BAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            RR
+        </div>
+
+        <div class="brand-text">
+
+            <h2>
+                ResumeRank
+            </h2>
+
+            <span>
+                Resume Screening System
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <nav class="nav-links">
+
+        <a href="{{ url_for('index') }}">
+            Screen Resumes
+        </a>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="active">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="candidate-container">
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="back-link">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+    {% if candidate %}
+
+
+    <!-- =====================================================
+         PROFILE HEADER
+    ====================================================== -->
+
+    <section class="profile-header">
+
+
+        <div class="profile-avatar">
+
+            {% if candidate.name %}
+
+                {{ candidate.name[0]|upper }}
+
+            {% else %}
+
+                ?
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="profile-main">
+
+            <span class="step-label">
+
+                CANDIDATE
+                #{{ "%02d"|format(candidate.rank) }}
+
+            </span>
+
+
+            <h1>
+                {{ candidate.name }}
+            </h1>
+
+
+            <p>
+                {{ candidate.filename }}
+            </p>
+
+        </div>
+
+
+        <div class="profile-status">
+
+
+            {% if candidate.status == "Shortlisted" %}
+
+                <span class="status-badge shortlisted">
+                    ✓ Shortlisted
+                </span>
+
+
+            {% elif candidate.status == "Under Review" %}
+
+                <span class="status-badge review">
+                    ◌ Under Review
+                </span>
+
+
+            {% else %}
+
+                <span class="status-badge rejected">
+                    × Rejected
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SCORE OVERVIEW
+    ====================================================== -->
+
+    <section class="score-overview">
+
+
+        <!-- Overall Score -->
+
+        <div class="main-score">
+
+            <span>
+                OVERALL MATCH
+            </span>
+
+
+            <strong>
+                {{ "%.2f"|format(candidate.final_score|float) }}%
+            </strong>
+
+
+            <p>
+                Overall candidate suitability
+            </p>
+
+        </div>
+
+
+        <!-- TF-IDF Score -->
+
+        <div class="score-item">
+
+            <span>
+                TF-IDF MATCH
+            </span>
+
+
+            <strong>
+                {{ "%.2f"|format(candidate.tfidf_score|float) }}%
+            </strong>
+
+
+            <div class="score-line">
+
+            <div style="width: {{ "%.2f"|format((candidate.tfidf_score or 0)|float) }}%;">
+               </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Keyword Score -->
+
+        <div class="score-item">
+
+            <span>
+                KEYWORD MATCH
+            </span>
+
+
+            <strong>
+                {{ "%.2f"|format(candidate.semantic_score|float) }}%
+            </strong>
+
+
+            <div class="score-line">
+
+              <div style="width:{{ '%.2f'|format((candidate.semantic_score or 0)|float) }}%;">
+              </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ASSESSMENT
+    ====================================================== -->
+
+    <section class="analysis-grid">
+
+
+        <!-- Assessment Card -->
+
+        <div class="analysis-card">
+
+
+            <div class="analysis-icon">
+                ✓
+            </div>
+
+
+            <div>
+
+                <span>
+                    SCREENING ASSESSMENT
+                </span>
+
+
+                <h3>
+
+                    {% if candidate.final_score|float >= 70 %}
+
+                        Strong Candidate
+
+                    {% elif candidate.final_score|float >= 50 %}
+
+                        Potential Candidate
+
+                    {% else %}
+
+                        Low Match
+
+                    {% endif %}
+
+                </h3>
+
+
+                <p>
+
+
+                    {% if candidate.final_score|float >= 70 %}
+
+                        This resume has a strong
+                        alignment with the provided
+                        job requirements.
+
+                    {% elif candidate.final_score|float >= 50 %}
+
+                        This candidate shows moderate
+                        alignment and may require
+                        additional review.
+
+                    {% else %}
+
+                        This resume has limited
+                        alignment with the provided
+                        job requirements.
+
+                    {% endif %}
+
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Ranking Card -->
+
+        <div class="analysis-card">
+
+
+            <div class="analysis-icon">
+                #
+            </div>
+
+
+            <div>
+
+                <span>
+                    CANDIDATE RANK
+                </span>
+
+
+                <h3>
+                    #{{ candidate.rank }}
+                </h3>
+
+
+                <p>
+                    Ranking is based on the final
+                    candidate matching score.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         RESUME CONTENT
+    ====================================================== -->
+
+    <section class="resume-card">
+
+
+        <div class="resume-heading">
+
+
+            <div>
+
+                <span class="step-label">
+                    RESUME CONTENT
+                </span>
+
+
+                <h2>
+                    Candidate Resume
+                </h2>
+
+            </div>
+
+
+            <div class="resume-file">
+                DOCX
+            </div>
+
+
+        </div>
+
+
+        <div class="resume-content">
+
+
+            {% if candidate.resume_text %}
+
+                <pre>{{ candidate.resume_text }}</pre>
+
+            {% else %}
+
+                <p>
+                    No resume content is available.
+                </p>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ACTION BUTTONS
+    ====================================================== -->
+
+    <div class="candidate-actions">
+
+
+        <a href="{{ url_for('dashboard') }}"
+           class="secondary-btn">
+
+            ← Back to Rankings
+
+        </a>
+
+
+        <a href="{{ url_for('index') }}"
+           class="primary-btn">
+
+            New Screening →
+
+        </a>
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- =====================================================
+         CANDIDATE NOT FOUND
+    ====================================================== -->
+
+    <section class="empty-dashboard">
+
+
+        <div class="empty-icon">
+            RR
+        </div>
+
+
+        <span class="step-label">
+            CANDIDATE NOT FOUND
+        </span>
+
+
+        <h2>
+            Candidate Details Unavailable
+        </h2>
+
+
+        <p>
+            The requested candidate could not be found
+            in the current screening session.
+        </p>
+
+
+        <a href="{{ url_for('dashboard') }}"
+           class="primary-btn">
+
+            Back to Dashboard →
+
+        </a>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="site-footer">
+
+
+    <div>
+
+        <strong>
+            ResumeRank
+        </strong>
+
+        <span>
+            Resume Screening System
+        </span>
+
+    </div>
+
+
+    <p>
+        © 2026 ResumeRank
+    </p>
+
+
+</footer>
+
+
+</body>
+
+</html>

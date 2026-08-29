@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | ResumeRank</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+     <!-- NAVIGATION BAR -->
+
+<nav class="navbar">
+
+<div class="brand">
+
+    <div class="brand-icon">
+        AI
+    </div>
+
+    <div>
+        <h2>ResumeRank</h2>
+        <span>AI-Powered Recruitment</span>
+    </div>
+
+</div>
+
+
+<div class="nav-links">
+
+    <a href="{{ url_for('index') }}">
+        Screen Resume
+    </a>
+
+    <a class="active"
+       href="{{ url_for('dashboard') }}">
+        Dashboard
+    </a>
+
+</div>
+
+</nav>
+
+     <!-- DASHBOARD -->
+
+<main class="dashboard-container">
+
+<!-- HEADER -->
+
+<section class="dashboard-header">
+
+    <div>
+
+        <span class="step-label">
+            RECRUITMENT OVERVIEW
+        </span>
+
+        <h1>
+            Candidate Dashboard
+        </h1>
+
+        <p>
+            Review and compare candidates based on
+            AI-generated matching scores.
+        </p>
+
+    </div>
+
+
+    <a href="{{ url_for('index') }}"
+       class="primary-btn">
+
+        + New Screening
+
+    </a>
+
+</section>
+
+
+
+{% if candidates %}
+
+
+     <!-- STATISTICS -->
+
+<section class="dashboard-stats">
+
+
+    <!-- TOTAL CANDIDATES -->
+
+    <div class="dashboard-stat">
+
+        <div class="stat-icon">
+            
+        </div>
+
+        <div>
+
+            <span>
+                TOTAL CANDIDATES
+            </span>
+
+            <strong>
+                {{ candidates|length }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SHORTLISTED -->
+
+    <div class="dashboard-stat">
+
+        <div class="stat-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <span>
+                SHORTLISTED
+            </span>
+
+            <strong>
+                {{
+                    candidates
+                    |selectattr("status", "equalto", "Shortlisted")
+                    |list
+                    |length
+                }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- UNDER REVIEW -->
+
+    <div class="dashboard-stat">
+
+        <div class="stat-icon">
+            ◌
+        </div>
+
+        <div>
+
+            <span>
+                UNDER REVIEW
+            </span>
+
+            <strong>
+                {{
+                    candidates
+                    |selectattr("status", "equalto", "Under Review")
+                    |list
+                    |length
+                }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- TOP MATCH -->
+
+    <div class="dashboard-stat">
+
+        <div class="stat-icon">
+            ★
+        </div>
+
+        <div>
+
+            <span>
+                TOP MATCH
+            </span>
+
+            <strong>
+                {{ candidates[0].final_score }}%
+            </strong>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+     <!-- RANKING SECTION -->
+
+<section class="ranking-card">
+
+
+    <div class="ranking-header">
+
+        <div>
+
+            <span class="step-label">
+                AI SCREENING RESULTS
+            </span>
+
+            <h2>
+                Candidate Rankings
+            </h2>
+
+        </div>
+
+
+        <div class="ranking-info">
+            Highest matching candidates shown first
+        </div>
+
+    </div>
+
+
+
+    <!-- TABLE HEADER -->
+
+    <div class="ranking-table-header">
+
+        <span>RANK</span>
+
+        <span>CANDIDATE</span>
+
+        <span>TF-IDF</span>
+
+        <span>SEMANTIC</span>
+
+        <span>FINAL SCORE</span>
+
+        <span>STATUS</span>
+
+        <span></span>
+
+    </div>
+
+
+
+    <!-- CANDIDATES -->
+
+    <div class="candidate-list">
+
+
+        {% for candidate in candidates %}
+
+
+        <div class="candidate-row">
+
+
+            <!-- RANK -->
+
+            <div class="rank">
+
+                {% if candidate.rank == 1 %}
+
+                    <span class="top-rank">
+                        #01
+                    </span>
+
+                {% else %}
+
+                    #{{ "%02d"|format(candidate.rank) }}
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- CANDIDATE -->
+
+            <div class="candidate-info">
+
+
+                <div>
+
+                    <h3>
+                        {{ candidate.name }}
+                    </h3>
+
+                    <p>
+                        {{ candidate.filename }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TF-IDF -->
+
+            <div class="mini-score">
+
+                <span>
+                    TF-IDF
+                </span>
+
+                <strong>
+                    {{ candidate.tfidf_score }}%
+                </strong>
+
+            </div>
+
+
+
+            <!-- SEMANTIC -->
+
+            <div class="mini-score">
+
+                <span>
+                    SEMANTIC
+                </span>
+
+                <strong>
+                    {{ candidate.semantic_score }}%
+                </strong>
+
+            </div>
+
+
+
+            <!-- FINAL SCORE -->
+
+            <div class="final-score">
+
+                <span>
+                    MATCH
+                </span>
+
+                <strong>
+                    {{ candidate.final_score }}%
+                </strong>
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div>
+
+                {% if candidate.status == "Shortlisted" %}
+
+                    <span class="status-badge shortlisted">
+                        ✓ Shortlisted
+                    </span>
+
+                {% elif candidate.status == "Under Review" %}
+
+                    <span class="status-badge review">
+                        ◌ Under Review
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge rejected">
+                        × Rejected
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- VIEW CANDIDATE -->
+
+            <div>
+
+                <a
+                    class="view-btn"
+                    href="{{ url_for('candidate', candidate_id=candidate.id) }}">
+
+                    View →
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+
+{% else %}
+
+
+     EMPTY DASHBOARD
+
+<section class="empty-dashboard">
+
+    <div class="empty-icon">
+        AI
+    </div>
+
+
+    <span class="step-label">
+        NO SCREENING DATA
+    </span>
+
+
+    <h2>
+        No Candidates Yet
+    </h2>
+
+
+    <p>
+        Upload candidate resumes and a job description
+        to start AI-powered screening.
+    </p>
+
+
+    <a href="{{ url_for('index') }}"
+       class="primary-btn">
+
+        Start Screening →
+
+    </a>
+
+</section>
+
+
+{% endif %}
+
+</main>
+
+     <!-- FOOTER -->
+
+<footer>
+
+<p>
+    ResumeRank — AI Resume Screening System
+</p>
+
+</footer>
+
+</body>
+
+</html>
