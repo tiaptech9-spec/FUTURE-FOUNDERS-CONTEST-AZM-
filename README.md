@@ -3,8 +3,8 @@
 AI Resume Ranker is an NLP and Machine-Learning powered resume screening system built with **Flask**, **scikit-learn**, and **python-docx**.
 It lets recruiters upload a batch of `.docx` resumes against a job description, automatically scores every candidate using TF-IDF cosine similarity and keyword-overlap matching, and returns a ranked, filterable shortlist.
 
-> ### Important Note about the Demonstration Video
-> _(Add your video's timestamp guide here once recorded — e.g. which section shows the screening upload, the dashboard, and the candidate profile walkthrough, and note any idle/skippable sections, following the same convention used across TechWiz 6 submissions.)_
+## BLOG LINK 
+https://medium.com/@tiaptech9/ai-resume-ranker-7bf98d5a1a61
 
 ## Features
 
@@ -18,7 +18,7 @@ It lets recruiters upload a batch of `.docx` resumes against a job description, 
 - **Persistent Storage** — all screening results are saved automatically to a local SQLite database
 
 ## Dataset Link From Kaggle
-   
+   https://www.kaggle.com/datasets/palaksood97/resume-dataset?utm_source=chatgpt.com
 
 ## Installation
 
@@ -28,9 +28,7 @@ Using a much older or newer version may cause compatibility issues with some lib
 1. **Clone this repository**
 
    ```
-   git clone https://github.com/<your-username>/AI_Resume_Ranker.git
-   cd AI_Resume_Ranker
-   ```
+   git clone https://github.com/tiaptech9-spec/FUTURE-FOUNDERS-CONTEST-AZM-
 
 2. **Create and activate a virtual environment**
 
